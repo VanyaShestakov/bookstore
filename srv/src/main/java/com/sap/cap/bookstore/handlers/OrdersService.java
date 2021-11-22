@@ -12,6 +12,7 @@ import com.sap.cds.ql.cqn.CqnUpdate;
 import com.sap.cds.services.ErrorStatuses;
 import com.sap.cds.services.ServiceException;
 import com.sap.cds.services.cds.CdsService;
+import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.Before;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import com.sap.cds.services.persistence.PersistenceService;
@@ -21,8 +22,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@ServiceName("OrderService")
-public class OrdersService {
+@ServiceName("OrdersService")
+public class OrdersService implements EventHandler {
 
     private final BookService bookService;
 
