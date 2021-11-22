@@ -1,5 +1,6 @@
 package com.sap.cap.bookstore.repository.impl;
 
+import cds.gen.adminservice.Products_;
 import cds.gen.booksservice.Books;
 import cds.gen.booksservice.Books_;
 import com.sap.cap.bookstore.repository.BookRepository;
@@ -27,7 +28,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Books> findById(String id) {
-        CqnSelect select = Select.from(Books_.class).columns(Books_::stock).where(b -> b.ID().eq(id));
+        CqnSelect select = Select.from(Books_.class).where(b -> b.ID().eq(id));
         return service.run(select).first(Books.class);
     }
 

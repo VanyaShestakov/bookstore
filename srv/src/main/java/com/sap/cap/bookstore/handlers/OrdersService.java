@@ -13,12 +13,14 @@ import com.sap.cds.services.ErrorStatuses;
 import com.sap.cds.services.ServiceException;
 import com.sap.cds.services.cds.CdsService;
 import com.sap.cds.services.handler.EventHandler;
+import com.sap.cds.services.handler.annotations.After;
 import com.sap.cds.services.handler.annotations.Before;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import com.sap.cds.services.persistence.PersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -54,5 +56,13 @@ public class OrdersService implements EventHandler {
                 validateBookAndDecreaseStock(order.getItems());
             }
         });
+    }
+
+    @After(event = {CdsService.EVENT_READ, CdsService.EVENT_CREATE}, entity =  "OrdersService.OrderItems")
+    public void calculateNetAmount(List<OrderItems> items) {
+        for (OrderItems item : items) {
+            Books book = bookService.findById(item.getBookId());
+            item.setNetAmount(book.getPrice().multiply(new BigDecimal(item.getAmount())));
+        }
     }
 }
